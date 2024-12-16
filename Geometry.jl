@@ -15,11 +15,11 @@ struct Point2d
     function Point2d()
         new(0.0,0.0)
     end
-    function Point2d(s::String)    
-                   
+    function Point2d(s::String)
+
         v = stringParse(s)
-        new(v[1],v[2])  
-        
+        new(v[1],v[2])
+
     end
 end
 
@@ -39,7 +39,7 @@ Examples:
 """
 
 struct Polygon
-    points::Vector{Point2d}    
+    points::Vector{Point2d}
 
     function Polygon(points::Vector{Point2d})    #constructor from vector of 2d points
         length(points)>2||throw(ArgumentError("You must have at least 3 points"))
@@ -49,15 +49,15 @@ struct Polygon
     function Polygon(points::Vector{<:Real}) #constructor from vector of reals
         length(points)%2==0||throw(ArgumentError("You must provide an even number of values"))
         length(points)>5 ||throw(ArgumentError("Too few points"))
-       
+
         new_points = Vector{Point2d}()
         for i in 1:2:length(points)-1
-            push!(new_points, Point2d(points[i],points[i+1]))            
+            push!(new_points, Point2d(points[i],points[i+1]))
         end
         new(new_points)
 
      end
-     
+
 function Polygon(x::Vararg{<:Real})  # Accepts a variable number of real numbers
     v = Real[]  # A vector to store the input values
     for i in x
@@ -97,7 +97,7 @@ function Makie.convert_arguments(S::Type{<:Lines}, poly::Polygon)
     push!(ypts, poly.points[1].y)
     Makie.convert_arguments(S, xpts, ypts)
   end
-  
+
 
 function stringParse(s::String)
 
@@ -115,9 +115,9 @@ for i in 1:length(s)
         j+=1
 
     end
-    
+
 end
-    return [parse(Float64, v[1]), parse(Float64, v[2])] 
+    return [parse(Float64, v[1]), parse(Float64, v[2])]
 end
 
 
@@ -179,7 +179,7 @@ Distance function.
 function perimeter(p::Polygon) #find the perimeter for a polygon
     perimeter = 0
     for i in 1:length(p.points)-1    #go around and measure/add each side length
-        
+
         #println(i, ": ", p.points[i], p.points[i+1], distance(p.points[i], p.points[i+1]))
         perimeter += distance(p.points[i], p.points[i+1])
     end
@@ -207,7 +207,7 @@ end
 
 """
 isRectangular function.
-Takes a polygon struct and returrns a boolean representing whether or not the parameter is rectangular. 
+Takes a polygon struct and returrns a boolean representing whether or not the parameter is rectangular.
 
 """
 
@@ -218,7 +218,7 @@ function area(p::Polygon)
     end
     area += p.points[length(p.points)].x * p.points[1].y - p.points[length(p.points)].y * p.points[1].x
     area = abs(area)/2
-    
+
 end
 """
 Area function.
@@ -228,6 +228,11 @@ Takes polygon as parameter and returns the area of the polygon.
 
 
 
+"""
+midpoint(p::Polyon)
+calculates the midpoint of the polygon.
+"""
+midpoint(p::Polygon) = Point2D(mean(map(pt -> pt.x, p.pts)), mean(map(pt -> pt.y, p.pts)))
 
 
 
