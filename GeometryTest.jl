@@ -1,6 +1,6 @@
 using Test
 using Revise
-includet("Geometry.jl")  
+includet("Geometry.jl")
 using .Geometry
 
 
@@ -62,22 +62,22 @@ end
     p1 =  Geometry.Point2d(1, 2)
     p2 =  Geometry.Point2d(1, 2)
     p3 =  Geometry.Point2d(3, 4)
-    @test  Geometry.equals(p1,p2) 
-    @test !Geometry.equals(p1, p3)  
+    @test  Geometry.equals(p1,p2)
+    @test !Geometry.equals(p1, p3)
 
     p4 =  Geometry.Point3d(1, 2, 3)
     p5 =  Geometry.Point3d(1, 2, 3)
     p6 =  Geometry.Point3d(3, 4, 5)
-    @test  Geometry.equals(p4, p5)  
-    @test ! Geometry.equals(p4 , p6) 
+    @test  Geometry.equals(p4, p5)
+    @test ! Geometry.equals(p4 , p6)
 end
 
 # Polygon Tests
 @testset "Polygon Tests" begin
     points = [ Geometry.Point2d(0, 0),  Geometry.Point2d(1, 0),  Geometry.Point2d(0, 1)]
-    
+
     triangle =  Geometry.Polygon(points)
-    
+
 
     @test isa(triangle,  Geometry.Polygon)
 
@@ -90,16 +90,25 @@ end
     shape =  Geometry.Polygon(0, 0, 2, 0, 3, 1, 1, 1)
     @test isa(shape,  Geometry.Polygon)
 
-    
+
     @test_throws ArgumentError  Geometry.Polygon([1, 2, 3])  # Odd number of arguments
     @test_throws ArgumentError  Geometry.Polygon([ Geometry.Point2d(0, 0),  Geometry.Point2d(1, 1)])  # Less than 3 points
 
     #functions
-    
+
     @test isapprox( Geometry.perimeter(triangle), sqrt(2)+2)
     @test isapprox( Geometry.perimeter(rectangle), 6)
     @test isapprox( Geometry.perimeter(parallelogram), 2*sqrt(2)+4)
 
+end
+
+@testset "Midpoint caclulations" begin
+    points = [ Geometry.Point2d(0, 0),  Geometry.Point2d(1, 0),  Geometry.Point2d(0, 1)]
+
+    triangle =  Geometry.Polygon(points)
+    rectangle =  Geometry.Polygon([ Geometry.Point2d(0, 0),  Geometry.Point2d(2, 0),  Geometry.Point2d(2, 1),  Geometry.Point2d(0, 1)])
+    @test midpoint(triangle) == Point2D(1/3,1/3)
+    @test midpoint(rectangle) == Point2D(0.5,1)
 end
 
 
